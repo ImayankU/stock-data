@@ -1,7 +1,8 @@
+// server.js
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const stockRoutes = require('./routes/stockRoutes');
+const connectDB = require('./config/db'); // Ensure this path is correct
 
 dotenv.config();
 
@@ -9,9 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
+connectDB(); // Call the connectDB function to connect to MongoDB
 
 // Middleware
 app.use(express.json());
