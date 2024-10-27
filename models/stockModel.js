@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const stockSchema = new mongoose.Schema({
     date: { type: Date, required: true },
     symbol: { type: String, required: true },

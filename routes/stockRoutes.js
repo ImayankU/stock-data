@@ -5,22 +5,18 @@ const path = require('path');
 const Stock = require('../models/stockModel');
 const { uploadCSV } = require('../controllers/stockController');
 
-// Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Set the destination folder for uploaded files
+        cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to avoid filename collisions
+        cb(null, Date.now() + path.extname(file.originalname));
     },
 });
 
 const upload = multer({ storage });
 
-// Route to upload CSV
-router.post('/upload_csv', upload.single('file'), uploadCSV); // 'file' should match the input name in the form
-
-// Endpoint to get the highest volume
+router.post('/upload_csv', upload.single('file'), uploadCSV);
 router.get('/highest_volume', async (req, res) => {
     try {
         const highestVolumeRecord = await Stock.findOne().sort({ volume: -1 });
@@ -33,8 +29,6 @@ router.get('/highest_volume', async (req, res) => {
         res.status(500).json({ message: "Error retrieving highest volume", error });
     }
 });
-
-// Endpoint to get the average close price
 router.get('/average_close', async (req, res) => {
     try {
         const averageClose = await Stock.aggregate([
@@ -55,7 +49,6 @@ router.get('/average_close', async (req, res) => {
     }
 });
 
-// Endpoint to get the average VWAP
 router.get('/average_vwap', async (req, res) => {
     try {
         const averageVWAP = await Stock.aggregate([
